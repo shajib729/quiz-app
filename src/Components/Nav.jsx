@@ -3,8 +3,10 @@ import {NavLink} from 'react-router-dom'
 import Account from './Account'
 import classes from '../styles/Nav.module.css'
 import logo from '../images/logo-bg.png'
+import { useAuth } from '../context/AuthContext'
 
 const Nav = () => {
+    console.log(useAuth());
     return (
         <nav className={classes.nav}>
             <ul>

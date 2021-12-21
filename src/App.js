@@ -7,10 +7,12 @@ import Login from './Components/pages/Login';
 import './styles/App.css'
 import Quiz from './Components/pages/Quiz';
 import Result from './Components/pages/Result';
+import {AuthProvider} from './context/AuthContext'
 
 function App() {
   return (
     <BrowserRouter>
+    <AuthProvider>
     <div className="App">
       <Layout>
         <Routes>
@@ -22,6 +24,7 @@ function App() {
         </Routes>
       </Layout>
       </div>
+      </AuthProvider>
       </BrowserRouter>
   );
 }
