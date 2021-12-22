@@ -3,10 +3,10 @@ import Form from './Form'
 import TextInput from './TextInput'
 import Checkbox from './Checkbox'
 import Button from './Button'
-import classes from '../styles/Form.module.css'
-import { Navigate, NavLink } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-// import { async } from '@firebase/util'
+import {SyncLoader} from "react-spinners";
+import GmailButton from './GmailButton'
 
 const SignupForm = () => {
     const [username, setUserName] = useState("")
@@ -14,33 +14,34 @@ const SignupForm = () => {
     const [password, setPassword] = useState("")
     const [cpassword, setCpassword] = useState("")
     const [agree, setAgree] = useState("")
-    const [error, setError] = useState()
+    const [error, setError] = useState('')
     const [loading, setLoading] = useState()
 
     const { signup } = useAuth()
+    const navigate = useNavigate()
     
     async function handleSubmit(e) { 
         e.preventDefault();
-        console.log('Submitted');
+        
         // validation
         if (password !== cpassword) {
             return setError("Password don't match !")
         }
-
         try {
             setError("")
             setLoading(true)
             await signup(email, password, username);
-            <Navigate to="/" />
+            setLoading(false);
+            navigate("/")
         } catch (err) {
-            console.log(err);
             setLoading(false);
             setError("Failed to create an account!");
         }
      }
 
     return (
-        <Form onSumit={handleSubmit} style={{height:"500px"}}>
+        <>
+        <Form onSubmit={handleSubmit} style={{height:"500px"}}>
             <TextInput 
                 type="text" 
                 placeholder="Enter name" 
@@ -84,14 +85,19 @@ const SignupForm = () => {
                 onChange={(e)=>setAgree(e.target.value)}
             />
 
-            <Button>Submit Now</Button>
+            <Button disabled={loading}>{loading?<SyncLoader color={"white"} loading={loading} size={10} />:"Submit Now"}</Button>
+            
+            {/* sign in with gmail   */}
+            <GmailButton text={"Sign in with Google"}/>
 
             {error && <p className='error'>{error}</p>}
+
 
             <div className="info">
             Already have an account? <NavLink to="/login">Login</NavLink> instead.
             </div>
         </Form>
+    </>
     )
 }
 

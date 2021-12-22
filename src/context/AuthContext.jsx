@@ -1,16 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, createContext } from 'react'
 import '../firebase.js'
 import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    GoogleAuthProvider,
     signOut,
     onAuthStateChanged,
-    updateProfile
+    updateProfile,
+    signInWithPopup
 } from 'firebase/auth'
-// import { async } from '@firebase/util'
 
-const AuthContext = React.createContext()
+const AuthContext = createContext()
 
 export function useAuth() {
     return useContext(AuthContext)
@@ -26,23 +27,32 @@ export function AuthProvider({ children }) {
             setCurrentUser(user)
             setLoading(false)
         })
-        return unsubscribe
-    },[])
+        return unsubscribe        
+    }, [])
+    
+    // signin with gmail
+    async function gmailSignin() {
+        const auth=getAuth()
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider)
+
+        const user = auth.currentUser;
+        
+        setCurrentUser({...user});
+    }
     
     // signup function
     async function signup (email, password, username) {
         const auth = getAuth();
         await createUserWithEmailAndPassword(auth, email, password)
-
+        
         // update profile
         await updateProfile(auth.currentUser, {
             displayName: username
         });
 
         const user = auth.currentUser;
-        setCurrentUser({
-            ...user
-        })
+        setCurrentUser({...user})
     }
 
     // login function 
@@ -59,6 +69,7 @@ export function AuthProvider({ children }) {
 
     const value = {
         currentUser,
+        gmailSignin,
         signup,
         login,
         logout

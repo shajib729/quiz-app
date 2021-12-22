@@ -1,9 +1,6 @@
-import { NavLink } from 'react-router-dom';
-import classes from '../../styles/Form.module.css'
-import Button from "../Button";
-import Form from "../Form";
+
 import Illustration from "../Illustration";
-import TextInput from "../TextInput";
+import LoginForm from "../LoginForm";
 
 export default function Signup() {
   return (
@@ -12,21 +9,7 @@ export default function Signup() {
 
       <div className="column">
         <Illustration />
-        <Form className={`${classes.login}`}>
-          <TextInput
-            type="text"
-            placeholder="Enter email"
-            icon="alternate_email"
-          />
-
-          <TextInput type="password" placeholder="Enter password" icon="lock" />
-
-          <Button>Submit Now</Button>
-
-          <div className="info">
-            Don't have an account? <NavLink to="/signup">Signup</NavLink> instead.
-          </div>
-        </Form>
+        <LoginForm/>
       </div>
     </>
   );

@@ -1,17 +1,29 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import classes from '../styles/Account.module.css'
+import {useAuth} from "../context/AuthContext"
 
 const Account = () => {
+    const {currentUser, logout} = useAuth()
     return (
         <div className={classes.account}>
-            <span className="material-icons-outlined" title="Account">
+            {
+                currentUser ?
+                <>
+                <span className="material-icons-outlined" title="Account">
                 account_circle
-            </span>
-            <NavLink to="/signup">Signup</NavLink>
-            {/* <span className='material-icons-outlined' title="Logout">
-                Logout
-            </span> */}
+                </span>
+                <span>{currentUser?.displayName}</span>
+                <span className='material-icons-outlined' title="Logout" onClick={()=>logout()}>
+                    logout
+                </span>
+                </>
+                :
+                <>
+                <NavLink to="/signup">Signup</NavLink>
+                <NavLink to="/login">Login</NavLink>
+                </>
+            }
         </div>
     )
 }

@@ -77,3 +77,7 @@ h4 {
     width: 90%;
   }
 }
+
+.infinite-scroll-component__outerdiv{
+  width: 100% !important;
+}
